@@ -1,1 +1,92 @@
+#include <iostream>
+#include <vector>
 
+struct Task
+{
+    std::string description;
+    bool completed;
+
+    Task(const std::string& desc) : description(desc), completed(false) {}
+};
+
+std::vector<Task> tasks;
+
+void addTask() 
+{
+    std::cout << "Enter task description: ";
+    std::string description;
+    std::getline(std::cin, description);
+    tasks.emplace_back(description);
+    std::cout << "Task added successfully!\n";
+}
+
+void viewTasks() 
+{
+    if (tasks.empty()) 
+    {
+        std::cout << "No tasks found.\n";
+        return;
+    }
+    for (int i = 0; i < tasks.size(); i++) 
+    {
+        std::cout << i+1 << ". ";
+        std::cout << (tasks[i].completed ? "[X] " : "[ ] ");
+        std::cout << tasks[i].description << "\n";
+    }
+}
+
+void deleteTask() {
+    if (tasks.empty()) {
+        std::cout << "No tasks found.\n";
+        return;
+    }
+    std::cout << "Enter the number of the task to delete: ";
+    int index;
+    std::cin >> index;
+    if (index < 1 || index > tasks.size()) {
+        std::cout << "Invalid task number.\n";
+        return;
+    }
+    tasks.erase(tasks.begin() + index - 1);
+    std::cout << "Task deleted successfully!\n";
+}
+
+int main() 
+{
+    std::cout << "Welcome to the To-Do List Manager!\n";
+
+    while (true) 
+    {
+        std::cout << "\nChoose an option:\n";
+        std::cout << "1. Add task\n";
+        std::cout << "2. View tasks\n";
+        std::cout << "3. Delete task\n";
+        std::cout << "4. Quit\n";
+        std::cout << "Enter option number: ";
+
+        int option;
+        std::cin >> option;
+        std::cin.ignore(); 
+
+        switch (option) 
+        {
+            case 1:
+                addTask();
+                break;
+            case 2:
+                viewTasks();
+                break;
+            case 3:
+                deleteTask();
+                break;
+            case 4:
+                std::cout << "Goodbye!\n";
+                return 0;
+            default:
+                std::cout << "Invalid option.\n";
+                break;
+        }
+    }
+
+    return 0;
+}
